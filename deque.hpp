@@ -1,5 +1,6 @@
 #ifndef DEQUE_HPP
 #define DEQUE_HPP
+#include <algorithm>
 template<class T>
 void Deque<T>::push_back(T x){
     backStack.push(x);
@@ -48,6 +49,25 @@ void Deque<T>::clear(){
 }
 template<class T>
 void Deque<T>::insert(int poz,T x){
-
+    if(poz<frontStack.size()){
+        Stack<T> aux(0);
+        for(int i=frontStack.size()-1;i>frontStack.size()-poz-1;i--)
+            aux.push(frontStack[i]);
+        aux.push(x);
+        for(int i=frontStack.size()-poz-1;i>=0;i--)
+            aux.push(frontStack[i]);
+        frontStack=aux;
+        reverse(&frontStack[0],&frontStack[frontStack.size()-1]+1);
+    }
+    else{
+        Stack<T>aux(0);
+        poz-=frontStack.size();
+        for(int i=0;i<poz;i++)
+            aux.push(backStack[i]);
+        aux.push(x);
+        for(int i=poz;i<backStack.size();i++)
+            aux.push(backStack[i]);
+        backStack=aux;
+    }
 }
 #endif // DEQUE_HPP
